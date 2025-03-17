@@ -1,13 +1,14 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {useRouter} from 'expo-router';
+import {useRouter, Link} from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Home screen</Text>
-      <Pressable onPress={() => router.push('/(screens)/vitals')}>
+      <Pressable onPress={() => router.push({pathname : '/(screens)/vitals'
+      })}>
         <View>
           <Text style={styles.text}> Go to Vitals</Text>
         </View>
@@ -17,12 +18,11 @@ export default function HomeScreen() {
           <Text style={styles.text}> Go to appointments</Text>
         </View>
       </Pressable>
-      <Pressable onPress={() => router.push('/(screens)/journal')}>
-        <View>
+      <TouchableOpacity>
+        <Link href={"/(screens)/journal"}>
           <Text style={styles.text}> Go to journal</Text>
-        </View>
-      </Pressable>
-
+        </Link>
+      </TouchableOpacity>
     </View>
   );
 }

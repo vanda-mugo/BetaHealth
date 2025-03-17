@@ -2,15 +2,16 @@ import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar } from 'react-native';
 import React from 'react';
-import { Stack } from 'expo-router';
 
 export default function TabLayout() {
   return (
     <>
-    <StatusBar backgroundColor="#25292e" barStyle="light-content" />
+    <StatusBar backgroundColor="auto" barStyle="light-content" />
     <Tabs
           screenOptions={{
             tabBarActiveTintColor: '#ffd33d',
+            animation:"none",
+            headerShown: false,
             headerStyle: {
               backgroundColor: '#25292e',
             },
@@ -20,6 +21,7 @@ export default function TabLayout() {
               backgroundColor: '#25292e',
               borderTopWidth: 0,
               elevation: 0,
+              transitionDuration: "0.3s",
             },
         }}
       >
