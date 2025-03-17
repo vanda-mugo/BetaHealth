@@ -36,13 +36,15 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack
       screenOptions={{
-        animation: "fade_from_bottom"
+        animation: "fade_from_bottom",
+        gestureEnabled: true,
+        animationTypeForReplace: "push",
       }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name='(screens)' options={{headerShown : false}} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar backgroundColor='#25292e'/>
     </ThemeProvider>
   );
 }

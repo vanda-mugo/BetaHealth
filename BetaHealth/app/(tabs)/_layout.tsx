@@ -1,12 +1,12 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StatusBar } from 'react-native';
+import { StatusBar, Pressable } from 'react-native';
 import React from 'react';
 
 export default function TabLayout() {
   return (
     <>
-    <StatusBar backgroundColor="auto" barStyle="light-content" />
+    <StatusBar backgroundColor="#25292e" barStyle="light-content" />
     <Tabs
           screenOptions={{
             tabBarActiveTintColor: '#ffd33d',
@@ -23,6 +23,9 @@ export default function TabLayout() {
               elevation: 0,
               transitionDuration: "0.3s",
             },
+            tabBarButton: (props) => <Pressable {...props} 
+            android_ripple={null}
+            />,
         }}
       >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: ({color, focused}) => (

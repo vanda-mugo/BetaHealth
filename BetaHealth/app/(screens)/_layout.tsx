@@ -33,12 +33,17 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack
+      screenOptions={{
+        animation: "fade",
+        gestureEnabled: true, 
+        animationTypeForReplace: "push",
+      }}>
         <Stack.Screen name="vitals" options={{ headerShown: false }} />
         <Stack.Screen name="journal" options={{ headerShown: false }} />
         <Stack.Screen name="appointments" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar backgroundColor='#25292e' />
     </ThemeProvider>
   );
 }

@@ -4,6 +4,7 @@ import {useRouter, Link} from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Home screen</Text>
