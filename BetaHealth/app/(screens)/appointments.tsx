@@ -1,24 +1,31 @@
 import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
 import BackIcon from '@/components/BackIcon';
+import CustomView from '@/components/CustomView';
 
 export default function AppointmentScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Appointment screen</Text>
+    <CustomView backgroundColor='#25292e' style={styles.container}>
+      <CustomView backgroundColor='#ffd33d' width={"80%"} height={"50%"} style={styles.customView}>
+        <Text>
+          Just to check this
+        </Text>
+      </CustomView>
       <BackIcon path='(tabs)' />
-    </View>
+    </CustomView>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     color: '#fff',
   },
+  customView: {
+    borderRadius : 30,
+  }
 });

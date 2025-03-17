@@ -7,23 +7,22 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home screen</Text>
       <Pressable onPress={() => router.push({pathname : '/(screens)/vitals'
       })}>
-        <View>
-          <Text style={styles.text}> Go to Vitals</Text>
+        <View style={styles.vitals}>
+          <Text style={styles.text}> Vitals</Text>
         </View>
       </Pressable>
       <Pressable onPress={() => router.push('/(screens)/appointments')}>
-        <View>
-          <Text style={styles.text}> Go to appointments</Text>
+        <View style={styles.view}>
+          <Text style={styles.text}> Appointments</Text>
         </View>
       </Pressable>
-      <TouchableOpacity>
-        <Link href={"/(screens)/journal"}>
-          <Text style={styles.text}> Go to journal</Text>
-        </Link>
-      </TouchableOpacity>
+      <Pressable onPress={() => router.push('/(screens)/journal')}>
+        <View style={styles.view}>
+          <Text style={styles.text}> Journal</Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -36,7 +35,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: '#fff',
+    color: '#000',
     padding: 20,
+    fontWeight: "500",
   },
+  view:{
+    height : 110,
+    width : 350,
+    backgroundColor: "#ffd33d",
+    borderRadius: 40,
+    marginVertical:20
+  },
+  vitals:{
+    height : 400,
+    width : 350,
+    backgroundColor: "#ffd33d",
+    borderRadius: 40,
+    marginVertical:20
+  }
 });
