@@ -1,9 +1,10 @@
 import { Text, View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
-import {useRouter, Link} from 'expo-router';
+import {useRouter, } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
+
 
   return (
     <View style={styles.container}>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     marginVertical:20
   },
   vitals:{
-    height : 400,
+    height : 450,
     width : 350,
     backgroundColor: "#ffd33d",
     borderRadius: 40,
