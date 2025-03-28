@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import React from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
-import { onAuthStateChanged, User } from '@firebase/auth';
-import { FIREBASE_AUTH } from '@/firebase';
 import { AuthProvider, useAuth } from '@/components/AuthContext';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -35,6 +33,10 @@ function AppContent() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+
+  const router = useRouter();
+
+  
 
   useEffect(() => {
     if (loaded) {

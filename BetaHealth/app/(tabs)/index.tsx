@@ -9,7 +9,9 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Pressable
+      <View style={styles.signOutContainer} >
+        <TouchableOpacity
+        style={styles.signOut}
         onPress={async () => {
             try {
               await FIREBASE_AUTH.signOut();
@@ -20,9 +22,9 @@ export default function HomeScreen() {
             }
           }}
         >
-        <View style={styles.signOut}>
-        </View>
-      </Pressable>
+        
+      </TouchableOpacity>
+      </View>
 
       <Pressable onPress={() => router.push({pathname : '/(screens)/vitals'
       })}>
@@ -72,10 +74,16 @@ const styles = StyleSheet.create({
   }, 
   signOut: {
     color : 'red',
-    height: 40, 
-    width: 40,
+    height: 10, 
+    width: 30,
     backgroundColor: 'red',
-    borderRadius: 20,
-    
-    }
+    borderRadius: 5,
+    marginRight:50,
+    },
+    signOutContainer: {
+      width: '100%',  // Ensures it takes full width
+      flexDirection: 'row',  // Aligns children horizontally
+      justifyContent: 'flex-end',  // Pushes button to the right
+      paddingBottom: 20, // Adds spacing
+    },
 });

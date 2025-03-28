@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { FIREBASE_AUTH } from "@/firebase";
+import { useRouter } from "expo-router";
 
 // Define the type for AuthContext
 interface AuthContextType {
@@ -17,6 +18,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [ authChecked, setAuthChecked ] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
 
@@ -37,6 +41,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("User state changed:", user);
         setUser(user);
         setAuthChecked(true);
+        setLoading(false);
+        if (user) {
+        router.replace("/(tabs)"); // Redirect to home if logged in
+      } else {
+        router.replace("/signIn"); // Redirect to login if not logged in
+      }
       }
     );
 
