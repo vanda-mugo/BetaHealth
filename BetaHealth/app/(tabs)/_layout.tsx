@@ -1,9 +1,20 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StatusBar, Pressable } from 'react-native';
+import { Redirect } from 'expo-router';
 import React from 'react';
 
+import { useAuth } from '@/components/AuthContext';
+
 export default function TabLayout() {
+
+  const { user} = useAuth();
+  if (!user) {
+    // On web, static rendering will stop here as the user is not authenticated
+    // in the headless Node process that the pages are rendered in.
+    return <Redirect href="/signIn" />;
+  }
+
   return (
     <>
     <StatusBar backgroundColor="#25292e" barStyle="light-content" />
