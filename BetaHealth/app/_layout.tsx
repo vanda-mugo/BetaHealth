@@ -71,6 +71,7 @@ function AppContent() {
               
           )}
           <Stack.Screen name="+not-found" />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack>
         <StatusBar backgroundColor='#25292e'/>
       </ThemeProvider>
