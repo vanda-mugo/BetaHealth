@@ -1,45 +1,54 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import {  signInWithEmailAndPassword } from 'firebase/auth';
 import {  FIREBASE_AUTH } from '../firebase';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Redirect } from 'expo-router';
-import { create } from 'react-test-renderer';
+import { useRouter } from 'expo-router';
+import { useAuth } from '@/components/AuthContext';
+import { useAnimatedKeyboard } from 'react-native-reanimated';
 
-const LoginScreen = () => {
+
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const { setUser, user} = useAuth();
+  const router = useRouter();
+  const keyboard = useAnimatedKeyboard();
+
+
+
+  useEffect(() => {
+    if (user) {
+      router.push('/(tabs)'); // Redirect to the home page
+    }
+  }
+  , [user]);
+  // Redirect if already logged in
   
   const handleLogin = async () => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Invalid email', 'Please re-enter email');
       return;
+    };
+
+    if(!email || !password){
+      return Alert.alert('Invalid input', 'Please enter email and password');
     }
-    setIsLoading(true);
+    
+    
     try{
+      setIsLoading(true);
       const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-      console.log(response);
-      alert('Login success');
+      //console.log(response);
+      setUser(response.user);
+      // navigate user to the index home screen 
+      router.push('/(tabs)');
     }catch(error : any){
       console.log(error);
       alert('Login failed');
-    }finally{
-      setIsLoading(false);
-    }
-  };
-
-  const signUp = async () => {
-    setIsLoading(true);
-    try{
-      const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-      console.log(response);
-    }catch(error : any){
-      console.log(error);
-      alert('Sign up failed');
     }finally{
       setIsLoading(false);
     }
@@ -50,85 +59,84 @@ const LoginScreen = () => {
   };
 
   return (
-<View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Login</Text>
-      </View>
-      <View>
-        <Text style={styles.titleLogin}>
-          Please login to continue.
-        </Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.inputWrapper}>
-          <MaterialIcons
-            name="mail"
-            size={20}
-            color="#9d9d9d"
-            style={styles.icon}
-          />
-          <TextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            style={styles.textInput}
-          />
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <View>
+          <Text style={styles.title}>Login</Text>
         </View>
-        <View style={styles.inputWrapper}>
-          <MaterialIcons
-            name="lock"
-            size={20}
-            color="#9d9d9d"
-            style={styles.icon}
-          />
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            onSubmitEditing={handleLogin}
-            secureTextEntry={!isPasswordVisible} // Bổ sung thuộc tính secureTextEntry để ẩn mật khẩu
-            style={styles.textInput}
-          />
-          <TouchableOpacity onPress={togglePasswordVisibility}>
+        <View>
+          <Text style={styles.titleLogin}>
+            Please login to continue.
+          </Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <View style={styles.inputWrapper}>
             <MaterialIcons
-              name={isPasswordVisible ? "visibility" : "visibility-off"}
+              name="mail"
               size={20}
               color="#9d9d9d"
+              style={styles.icon}
             />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.registerContainer}>
-          <TouchableOpacity
-          >
-            <Text style={styles.registerText}>
-              Don’t have an account? <Text style={styles.registerLink}>Sign Up</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={handleLogin}>
-          <View style={styles.loginButton}>
-            <Text style={styles.loginButtonText}>
-              {isLoading ? "Logging in..." : "Login"}
-            </Text>
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              style={styles.textInput}
+              placeholderTextColor="#9d9d9d"
+            />
           </View>
-        </TouchableOpacity>
-
-        <View style={styles.errorMessageContainer}>
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
+          <View style={styles.inputWrapper}>
+            <MaterialIcons
+              name="lock"
+              size={20}
+              color="#9d9d9d"
+              style={styles.icon}
+            />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              onSubmitEditing={handleLogin}
+              secureTextEntry={!isPasswordVisible} // Bổ sung thuộc tính secureTextEntry để ẩn mật khẩu
+              style={styles.textInput}
+              placeholderTextColor="#9d9d9d"
+            />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <MaterialIcons
+                name={isPasswordVisible ? "visibility" : "visibility-off"}
+                size={20}
+                color="#9d9d9d"
+              />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={handleLogin}>
+            <View style={styles.loginButton}>
+              <Text style={styles.loginButtonText}>
+                {isLoading ? "Logging in..." : "Login"}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.registerContainer}>
+            <TouchableOpacity
+            onPress={() => router.push('/signUp')}
+            >
+              <Text style={styles.registerText}>
+                Don’t have an account? <Text style={styles.registerLink}>Sign Up</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#25292e",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   title: {
     color: "#5F5F5F",
@@ -148,15 +156,16 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#3A3F44",
     paddingHorizontal: 10,
     borderWidth: 0.2,
-    borderRadius: 5,
+    borderRadius: 15,
   },
   textInput: {
     flex: 1,
     paddingVertical: 15,
     paddingHorizontal: 10,
+    color: "#fff",
   },
   icon: {
     marginRight: 10,
@@ -167,6 +176,7 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: "#5F5F5F",
+    marginBottom: 100,
   },
   registerLink: {
     color: "#456FE8",
@@ -176,8 +186,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#456FE8",
     paddingHorizontal: 20,
     paddingVertical: 15,
-    borderRadius: 5,
+    borderRadius: 15,
     alignItems: "center",
+    
   },
   loginButtonText: {
     color: "#fff",

@@ -9,6 +9,7 @@ import React from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
 import { onAuthStateChanged, User } from '@firebase/auth';
 import { FIREBASE_AUTH } from '@/firebase';
+import { AuthProvider, useAuth } from '@/components/AuthContext';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 //import { SessionProvider } from '@/components/ctx';
@@ -17,33 +18,23 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [user, setUser] = useState<User | null>(null);
-  const [ authChecked, setAuthChecked ] = useState<boolean>(false);
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+
+function AppContent() {
 
   NavigationBar.setBackgroundColorAsync("#25292e");
-  const router = useRouter();
-
+  //const router = useRouter();
+  const {user, authChecked} = useAuth();
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
-
-  useEffect(() => {
-    // this checks the auth state of the user
-    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user: User | null) => {
-      console.log('this User:', user);
-      setUser(user);
-      setAuthChecked(true);
-      
-
-    });
-
-    //cleanup listener on unmount
-    return () => {
-      unsubscribe();
-    };  
-
-  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -73,7 +64,9 @@ export default function RootLayout() {
           ) : (
             <>
               <Stack.Screen name="signIn" options={{headerShown: false}} />
+              <Stack.Screen name="signUp" options={{headerShown: false}} />
             </>
+              
           )}
           <Stack.Screen name="+not-found" />
         </Stack>
